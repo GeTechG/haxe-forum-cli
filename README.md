@@ -7,14 +7,28 @@ The forum runs on [Discourse](https://www.discourse.org/), which exposes a publi
 ## Install
 
 ```bash
+npm install -g haxe-forum-cli
+```
+
+Then use the `hxf` command anywhere. Requires Node.js 18+ (uses the built-in `fetch`).
+
+You can also run it without installing:
+
+```bash
+npx haxe-forum-cli search "build macro"
+```
+
+### From source
+
+```bash
+git clone https://github.com/GeTechG/haxe-forum-cli
+cd haxe-forum-cli
 npm install        # install dependencies
 npm run build      # compile TypeScript -> dist/
-npm link           # (optional) make the `hxf` command available globally
+npm link           # make the `hxf` command available globally
 ```
 
 Without `npm link` you can run it via `node dist/cli.js <command>` or `npm run dev -- <command>`.
-
-Requires Node.js 18+ (uses the built-in `fetch`).
 
 ## Usage
 
