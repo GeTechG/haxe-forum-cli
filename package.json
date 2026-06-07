@@ -1,0 +1,49 @@
+{
+  "name": "haxe-forum-cli",
+  "version": "0.1.0",
+  "description": "CLI to search and read the Haxe community forum (community.haxe.org)",
+  "type": "module",
+  "bin": {
+    "hxf": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "AGENTS.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/cli.ts",
+    "start": "node dist/cli.js",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "haxe",
+    "forum",
+    "discourse",
+    "cli",
+    "search"
+  ],
+  "author": "GeTechG",
+  "license": "MIT",
+  "homepage": "https://github.com/GeTechG/haxe-forum-cli#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GeTechG/haxe-forum-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/GeTechG/haxe-forum-cli/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^12.1.0",
+    "node-html-parser": "^6.1.13"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}
