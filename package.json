@@ -8,8 +8,7 @@
   },
   "files": [
     "dist",
-    "AGENTS.md",
-    ".claude/skills/haxe-forum/SKILL.md"
+    "skill/SKILL.md"
   ],
   "scripts": {
     "build": "tsc",

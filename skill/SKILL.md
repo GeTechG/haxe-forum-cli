@@ -29,10 +29,37 @@ If `hxf` is not installed globally, run `node dist/cli.js <args>` from the repo
 3. `hxf read <id> --json --all`; look for posts with `"accepted_answer": true` first.
 4. Answer the user and cite the thread `url`.
 
-## Output schemas & full reference
+## Output schemas
 
-See `AGENTS.md` at the repo root for the complete `--json` schemas and tips
-(Discourse search operators, `HAXE_FORUM_URL` override, etc.).
+`search --json`:
+```jsonc
+{ "query": "...", "count": 5, "results": [
+  { "id": 3556, "title": "...", "url": "https://community.haxe.org/t/3556",
+    "posts_count": 2, "likes": 0, "views": 387,
+    "created_at": "...", "last_posted_at": "...",
+    "tags": ["macro"], "blurb": "first matching post, plain text" } ] }
+```
+
+`read --json`:
+```jsonc
+{ "id": 3556, "title": "...", "url": "...", "posts_count": 2, "views": 387,
+  "tags": ["macro"], "created_by": "Geokureli",
+  "posts_shown": 2, "total_posts": 2,
+  "posts": [ { "number": 1, "username": "Geokureli", "created_at": "...",
+               "likes": 0, "accepted_answer": false,
+               "content": "post body as Markdown" } ] }
+```
+
+`latest --json` / `category <slug> --json`: `{ "count": N, "results": [ <topic summary>, ... ] }`
+`category --json` (no arg): `{ "count": N, "categories": [ { "id", "name", "slug", "topic_count", "description" }, ... ] }`
+
+Output has no ANSI colors when piped; errors print `{"error": "..."}` with a non-zero exit code.
+
+## Tips
+
+- Search supports Discourse operators, e.g. `hxf search "macro tags:macro"`.
+- Quote multi-word queries, or pass them as multiple args — both work.
+- Point at another Discourse forum with `HAXE_FORUM_URL=https://other.example`.
 
 ## Etiquette
 

@@ -31,8 +31,8 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 function locateSkillSource(): string {
   const candidates = [
     // dist/skill.js -> package root, or src/skill.ts -> repo root
-    path.resolve(here, "../.claude/skills/haxe-forum/SKILL.md"),
-    path.resolve(here, "../../.claude/skills/haxe-forum/SKILL.md"),
+    path.resolve(here, "../skill/SKILL.md"),
+    path.resolve(here, "../../skill/SKILL.md"),
   ];
   return candidates.find((c) => existsSync(c)) ?? candidates[0];
 }

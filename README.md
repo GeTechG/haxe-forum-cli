@@ -147,11 +147,12 @@ preserving code blocks, quotes, lists, and links.
 
 ```
 src/
-  api.ts      # Discourse JSON API client
-  render.ts   # HTML -> colored terminal text
-  format.ts   # dates, tags, headings
-  skill.ts    # `install-skill` — agent targets & arrow-key menu
-  cli.ts      # commander commands & output
+  api.ts        # Discourse JSON API client
+  render.ts     # HTML -> colored terminal text / Markdown
+  normalize.ts  # raw API -> compact, stable JSON shapes
+  format.ts     # dates, tags, headings
+  skill.ts      # `install-skill` — agent targets & arrow-key menu
+  cli.ts        # commander commands & output
 ```
 
 ## License

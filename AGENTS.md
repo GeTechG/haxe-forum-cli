@@ -3,7 +3,7 @@
 > This file is read by AI coding agents (OpenAI Codex, Cursor, Zed, Gemini CLI,
 > Aider, and others that follow the [AGENTS.md](https://agents.md) convention).
 > Claude Code reads `CLAUDE.md`, which imports this file. A Claude *Skill* lives
-> in `.claude/skills/haxe-forum/SKILL.md`.
+> in `skill/SKILL.md` (installed into projects via `hxf install-skill`).
 
 ## What this tool does
 
