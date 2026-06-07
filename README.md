@@ -37,6 +37,7 @@ hxf search <query...>      # search topics
 hxf read <topicId>         # read a topic and its replies
 hxf latest                 # newest topics
 hxf category [slugOrId]    # list categories, or topics in a category
+hxf install-skill [agent]  # install the agent skill into the current project
 ```
 
 ### Examples
@@ -50,7 +51,28 @@ hxf read 3556 --page 2              # read the next page of posts
 hxf latest -l 20                    # 20 most recent topics
 hxf category                        # list all categories
 hxf category haxe                   # topics in the "haxe" category
+hxf install-skill                   # pick an agent from an arrow-key menu
+hxf install-skill claude            # install straight for Claude Code
+hxf install-skill --all             # install for every supported agent
 ```
+
+### Installing the skill into your project
+
+`hxf install-skill` copies a ready-made "skill" (agent instructions for using
+`hxf`) into the project folder you run it from. Run it with no arguments to pick
+a target from an interactive **↑/↓ menu**, or name the agent directly. It writes
+to the right place for each agent:
+
+| Agent          | Destination                              |
+| -------------- | ---------------------------------------- |
+| `claude`       | `.claude/skills/haxe-forum/SKILL.md`     |
+| `codex`        | `.codex/skills/haxe-forum/SKILL.md`      |
+| `cursor`       | `.cursor/rules/haxe-forum.md`            |
+| `gemini`       | `.gemini/skills/haxe-forum/SKILL.md`     |
+| `windsurf`     | `.windsurf/skills/haxe-forum/SKILL.md`   |
+
+Existing files are left untouched unless you pass `--force`. Use `--list` to see
+the agents (add `--json` for machine output), and `--all` to install everywhere.
 
 ### Common options
 
@@ -128,6 +150,7 @@ src/
   api.ts      # Discourse JSON API client
   render.ts   # HTML -> colored terminal text
   format.ts   # dates, tags, headings
+  skill.ts    # `install-skill` — agent targets & arrow-key menu
   cli.ts      # commander commands & output
 ```
 

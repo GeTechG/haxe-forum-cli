@@ -17,6 +17,10 @@ A reusable Claude Skill is also available at
 - `npm run dev -- <args>` runs the CLI without building (via `tsx`).
 - Layout: `api.ts` (Discourse client), `render.ts` (HTML→terminal/Markdown),
   `normalize.ts` (raw API → compact JSON shapes), `format.ts` (dates/tags),
-  `cli.ts` (commander commands & output).
+  `skill.ts` (`install-skill`: agent targets + arrow-key menu), `cli.ts`
+  (commander commands & output).
+- `install-skill` copies `.claude/skills/haxe-forum/SKILL.md` into a project for
+  a chosen agent. That source file ships in the npm package (`files` in
+  `package.json`); keep it listed there or installs from npm will break.
 - Keep `--json` output **normalized and stable** — agents and scripts depend on
   the schema documented in `AGENTS.md`. If you change it, update that doc.

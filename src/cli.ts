@@ -20,13 +20,21 @@ import {
   normalizeCategory,
   type TopicSummary,
 } from "./normalize.js";
+import {
+  TARGETS,
+  findTarget,
+  installSkill,
+  selectMenu,
+  type SkillTarget,
+  type InstallResult,
+} from "./skill.js";
 
 const program = new Command();
 
 program
   .name("hxf")
   .description("Search and read the Haxe community forum (community.haxe.org)")
-  .version("0.1.0");
+  .version("0.2.0");
 
 const isTTY = Boolean(process.stdout.isTTY);
 
@@ -220,6 +228,81 @@ program
       if (wantsJson(opts)) return printJson({ count: topics.length, results: topics });
       if (opts.md) return console.log(topicListToMarkdown(topics, `Topics in "${slugOrId}"`));
       printTopicList(topics, `Topics in "${slugOrId}"`);
+    } catch (e) {
+      fail(e, wantsJson(opts));
+    }
+  });
+
+// ---- install-skill ----
+program
+  .command("install-skill [agent]")
+  .alias("skill")
+  .description("Install the haxe-forum skill into this project for an AI agent")
+  .option("--all", "install for every supported agent")
+  .option("--force", "overwrite an existing skill file")
+  .option("--list", "list supported agents and exit")
+  .option("--json", "output JSON result")
+  .action(async (agentArg: string | undefined, opts) => {
+    try {
+      if (opts.list) {
+        if (wantsJson(opts)) {
+          return printJson({ agents: TARGETS });
+        }
+        console.log(heading("\nSupported agents:\n"));
+        for (const t of TARGETS) {
+          console.log(`  ${chalk.bold(t.id.padEnd(10))} ${t.label} ${chalk.dim(`→ ${t.dest}`)}`);
+        }
+        return;
+      }
+
+      // Decide which targets to install into.
+      let targets: SkillTarget[];
+      if (opts.all) {
+        targets = TARGETS;
+      } else if (agentArg) {
+        const t = findTarget(agentArg);
+        if (!t) {
+          throw new Error(
+            `Unknown agent "${agentArg}". Try one of: ${TARGETS.map((x) => x.id).join(", ")} (or --all).`
+          );
+        }
+        targets = [t];
+      } else if (isTTY && !wantsJson(opts)) {
+        const items = [
+          ...TARGETS.map((t) => ({ label: t.label, hint: t.dest })),
+          { label: "All of the above", hint: "install for every agent" },
+        ];
+        const choice = await selectMenu("Install the haxe-forum skill for:", items);
+        if (choice === null) {
+          console.log(chalk.yellow("Cancelled."));
+          return;
+        }
+        targets = choice === TARGETS.length ? TARGETS : [TARGETS[choice]];
+      } else {
+        throw new Error(
+          `No agent specified. Pass an agent id (${TARGETS.map((x) => x.id).join(", ")}), --all, or run in a terminal to pick interactively.`
+        );
+      }
+
+      const results: InstallResult[] = [];
+      for (const t of targets) {
+        results.push(await installSkill(t, { force: opts.force }));
+      }
+
+      if (wantsJson(opts)) return printJson({ count: results.length, results });
+
+      console.log();
+      for (const r of results) {
+        if (r.status === "written") {
+          console.log(`${chalk.green("✓")} ${chalk.bold(r.target.label)} ${chalk.dim(r.path)}`);
+        } else {
+          console.log(
+            `${chalk.yellow("•")} ${chalk.bold(r.target.label)} ${chalk.dim(
+              `${r.path} (already present — use --force to overwrite)`
+            )}`
+          );
+        }
+      }
     } catch (e) {
       fail(e, wantsJson(opts));
     }
